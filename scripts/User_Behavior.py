@@ -10,9 +10,9 @@ class UserBehaviorAnalysis:
         self.df = df
         self.user_id_col = user_id_col
         self.session_duration_col = session_duration_col
-        self.dl_columns = ['Social Media DL (Bytes)', 'YouTube DL (Bytes)', 'Netflix DL (Bytes)', 
+        self.dl_columns = ['Social Media DL (Bytes)',  'Netflix DL (Bytes)', 
                    'Google DL (Bytes)', 'Email DL (Bytes)', 'Gaming DL (Bytes)', 'Other DL (Bytes)']
-        self.ul_columns = ['Social Media UL (Bytes)', 'YouTube UL (Bytes)', 'Netflix UL (Bytes)', 
+        self.ul_columns = ['Social Media UL (Bytes)', 'Netflix UL (Bytes)', 
                    'Google UL (Bytes)', 'Email UL (Bytes)', 'Gaming UL (Bytes)', 'Other UL (Bytes)']
 
         self._prepare_data()
@@ -82,7 +82,7 @@ class UserBehaviorAnalysis:
     def correlation_analysis(self):
             # List of expected columns
             dl_columns = ['Social Media DL (Bytes)', 'Google DL (Bytes)', 'Email DL (Bytes)', 
-                        'YouTube DL (Bytes)', 'Netflix DL (Bytes)', 'Gaming DL (Bytes)', 'Other DL (Bytes)']
+                        'Netflix DL (Bytes)', 'Gaming DL (Bytes)', 'Other DL (Bytes)']
             
             # Ensure columns are present in DataFrame
             existing_columns = [col for col in dl_columns if col in self.df.columns]
@@ -114,6 +114,7 @@ class UserBehaviorAnalysis:
         print(f"Explained Variance Ratio Cumulative Sum: {np.cumsum(explained_variance)}")
         
         return principal_components, explained_variance
+
 
 
 
