@@ -97,15 +97,37 @@ class UserExperienceAnalyzer:
                     'TCP DL Retrans. Vol (Bytes)', 'TCP UL Retrans. Vol (Bytes)', 
                     'Avg RTT DL (ms)', 'Avg RTT UL (ms)']
 
-        X = self.df[features].dropna()  # Dropping rows with missing values
+        # Drop rows with missing values in the features
+        X = self.df[features].dropna()
+        
+        # Perform clustering
         kmeans = KMeans(n_clusters=n_clusters, random_state=42)
-        self.df['Cluster'] = kmeans.fit_predict(X)
+        cluster_labels = kmeans.fit_predict(X)
+        
+        # Add the cluster labels to the original DataFrame
+        self.df['Cluster'] = pd.NA
+        self.df.loc[X.index, 'Cluster'] = cluster_labels
 
         # Print numeric result
         cluster_summary = self.df.groupby('Cluster')[features].mean()
         print("\nCluster Summary:\n", cluster_summary)
 
         return cluster_summary
-    
-    
-    
+
+    def describe_clusters(self):
+        # Describe each cluster based on the computed summary
+        cluster_summary = self.df.groupby('Cluster').mean()
+        
+        descriptions = []
+        for i, row in cluster_summary.iterrows():
+            description = f"Cluster {i}:"
+            description += f"\nAverage DL Throughput: {row['Avg Bearer TP DL (kbps)']:.2f} kbps"
+            description += f"\nAverage UL Throughput: {row['Avg Bearer TP UL (kbps)']:.2f} kbps"
+            description += f"\nAverage DL Retransmission Volume: {row['TCP DL Retrans. Vol (Bytes)']:.2f} Bytes"
+            description += f"\nAverage UL Retransmission Volume: {row['TCP UL Retrans. Vol (Bytes)']:.2f} Bytes"
+            description += f"\nAverage DL RTT: {row['Avg RTT DL (ms)']:.2f} ms"
+            description += f"\nAverage UL RTT: {row['Avg RTT UL (ms)']:.2f} ms"
+            descriptions.append(description)
+
+        for description in descriptions:
+            print(description)

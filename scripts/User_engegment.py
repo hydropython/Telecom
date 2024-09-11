@@ -17,12 +17,18 @@ class UserEngagementAnalysis:
             total_traffic_dl=('Total DL (Bytes)', 'sum'),
             total_traffic_ul=('Total UL (Bytes)', 'sum')
         ).reset_index()
+        print("Aggregated Metrics:")
+        print(self.agg_df.head())
+        return self.agg_df
 
     def normalize_metrics(self):
         # Normalize the metrics
         self.agg_df[['session_frequency', 'total_duration', 'total_traffic_dl', 'total_traffic_ul']] = self.scaler.fit_transform(
             self.agg_df[['session_frequency', 'total_duration', 'total_traffic_dl', 'total_traffic_ul']]
         )
+        print("Normalized Metrics:")
+        print(self.agg_df.head())
+        return self.agg_df
 
     def kmeans_clustering(self, k=3):
         # Perform k-means clustering
@@ -30,6 +36,9 @@ class UserEngagementAnalysis:
         self.agg_df['cluster'] = kmeans.fit_predict(
             self.agg_df[['session_frequency', 'total_duration', 'total_traffic_dl', 'total_traffic_ul']]
         )
+        print("Cluster Assignments:")
+        print(self.agg_df[['MSISDN/Number', 'cluster']].head())
+        return self.agg_df['cluster'].value_counts()
 
     def compute_cluster_stats(self):
         # Compute stats for each cluster
@@ -51,6 +60,9 @@ class UserEngagementAnalysis:
             avg_traffic_ul=('total_traffic_ul', 'mean'),
             total_traffic_ul=('total_traffic_ul', 'sum')
         ).reset_index()
+        print("Cluster Statistics:")
+        print(self.cluster_stats)
+        return self.cluster_stats
 
     def plot_engagement_metrics(self):
         # Plot top 10 customers per engagement metric
@@ -99,6 +111,8 @@ class UserEngagementAnalysis:
         plt.xlabel('Application')
         plt.ylabel('Total Data Volume (Bytes)')
         plt.show()
+        
+        return top_apps
 
     def plot_elbow_method(self):
         # Determine the optimal k using the elbow method
@@ -116,9 +130,4 @@ class UserEngagementAnalysis:
         plt.grid(True)
         plt.show()
 
-    def print_top_user_engagement_metrics(self, top_n=10):
-        # Print engagement metrics of top N users
-        top_10_users = self.agg_df.nlargest(top_n, 'session_frequency')
-        print(f"Top {top_n} Users by Session Frequency:")
-        print(top_10_users[['MSISDN/Number', 'session_frequency', 'total_duration', 'total_traffic_dl', 'total_traffic_ul']])
-
+        return wcss
