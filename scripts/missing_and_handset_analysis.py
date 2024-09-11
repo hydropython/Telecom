@@ -1,11 +1,7 @@
 
 import pandas as pd
-
-import pandas as pd
 import numpy as np  # Make sure to import NumPy
 
-import pandas as pd
-import numpy as np  # Make sure to import NumPy
 
 class DataFrameMissingValueChecker:
     """

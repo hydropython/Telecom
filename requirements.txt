@@ -1,0 +1,9 @@
+ pandas 
+sklearn.cluster 
+ seaborn 
+ sklearn.cluster 
+ sklearn.linear_model 
+ matplotlib.pyplot 
+ seaborn 
+ psycopg2
+ pandas 
