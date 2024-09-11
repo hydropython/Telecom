@@ -34,7 +34,7 @@ Provide data-driven recommendations on whether the company’s growth potential 
 
 Setup Instructions
 Clone the Repository:
-git clone https://github.com/your_username/telecom-data-analysis.git
+git clone https://github.com/yhydropython/telecom.git
 cd telecom-data-analysis
 
 pip install -r requirements.txt
